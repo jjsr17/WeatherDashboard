@@ -18,23 +18,27 @@ function getWeather(city){
 
 
 function getCoordinates(city){
-    let api =`https://api.openweathermap.org/1.0/direct?=${city}&limit=4&appid=${apiKey}`;
+    let api =`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=4&appid=${apiKey}`;
     fetch(api)
         .then(function (response){
             console.log("response",response);
+            
             return response.JSON;
-
         })
-        .then(function (data){
-            if (!data[0]){
+        .then(function (data1){
+            if (!data1[0]){
                 console.log("location not found");
             }else{
-                console.log("data[0]",data[0]);
+                console.log("data1[0]",data1[0]);
 
                 addToList(city);
-                getWeather(data[0]);
+                getWeather(data1[0]);
             }
         })
+        .catch(function (error){
+            console.error(error);
+
+        });
 }
 
 
@@ -53,6 +57,7 @@ function handleCitySearch(event){
 function handleSearchHistory(event){
 //to be completed
 }
+
 let storedCities = localStorage.getItem("stored-cities");
 if(storedCities) {
     cityHistory=JSON.parse(storedCities);
